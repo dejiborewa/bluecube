@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const SearchImages = styled.img`
@@ -66,63 +66,18 @@ const Location = styled(Bio)`
 `;
 
 const SearchResults = ({ data }) => {
-    const [mouseEntered, setMouseEntered] = useState(false);
-
-    const handleMouseEnter = (e) => {
-        
-    }
-
     return (
         <ImagesContainer>
             {data.data.results.map((result, index) => {
                 return (
                     <React.Fragment key={index}>
-                        <Container
-                            data-id={index}
-                            className="images"
-                            onMouseEnter={(e) => handleMouseEnter(e)}
-                            onMouseLeave={(e) => handleMouseLeave(e)}
-                        >
+                        <Container data-id={index} className="images">
                             <SearchImages src={result.urls.small} />
 
-                            {!mouseEntered ? (
-                                <Container className="details-container">
-                                    <Container className="details">
-                                        <Bio>{result.user.first_name}</Bio>
-                                        <Location>
-                                            <svg
-                                                style={{
-                                                    display: "inline",
-                                                    width: "16px",
-                                                    verticalAlign: "middle",
-                                                    marginRight: "4px",
-                                                }}
-                                                fill="none"
-                                                stroke="currentColor"
-                                                viewBox="0 0 24 24"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                                                />
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={1}
-                                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                                                />
-                                            </svg>
-                                            {result.user.location}
-                                        </Location>
-                                    </Container>
-                                </Container>
-                            ) : (
-                                <Container className="like-page">
-                                    <Bio like>{result.user.first_name}</Bio>
-                                    <Location like>
+                            <Container className="details-container">
+                                <Container className="details">
+                                    <Bio>{result.user.first_name}</Bio>
+                                    <Location>
                                         <svg
                                             style={{
                                                 display: "inline",
@@ -151,7 +106,7 @@ const SearchResults = ({ data }) => {
                                         {result.user.location}
                                     </Location>
                                 </Container>
-                            )}
+                            </Container>
                         </Container>
                     </React.Fragment>
                 );
