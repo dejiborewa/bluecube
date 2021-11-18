@@ -3,15 +3,14 @@ import styled from "styled-components";
 
 const LoaderContainer = styled.div`
     width: 100%;
-    height: 100vh;
 `;
 
 const LoaderBox = styled.div`
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
-    width: 5em;
-    height: 5em;
+    width: 3em;
+    height: 3em;
     transform: translate(-50%, -50%);
 `;
 

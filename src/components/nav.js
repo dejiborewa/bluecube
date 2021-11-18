@@ -7,10 +7,12 @@ const NavBar = styled.nav`
     display: flex;
     justify-content: space-between;
 
-    @media (min-width: 768px) {
+    &.big-screen {
         display: block;
         width: 20%;
-        border-right: 1px soild var(--color-aux);
+        height: 90vh;
+        border-right: 1px solid var(--color-greyBoxShadow);
+        margin-right: 1em;
     }
 `;
 
@@ -49,6 +51,7 @@ const TextSmall = styled.p`
     display: inline;
     margin-left: 7px;
     vertical-align: top;
+    cursor: pointer;
 
     &:focus {
         border: 1px solid var(--color-aux);
@@ -356,7 +359,7 @@ function Nav() {
                     )}
                 </NavBar>
             ) : (
-                <NavBar>
+                <NavBar className="big-screen">
                     <Name>bluecube</Name>
 
                     <Menu>

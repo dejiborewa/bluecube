@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import SearchResults from "./components/searchResults";
 import Loader from "./components/loader";
 import Nav from "./components/nav";
 import ana from "./components/assets/ana.jpg";
@@ -17,11 +18,15 @@ const Main = styled.main`
     }
 
     @media (min-width: 1024px) {
-        padding: 3em 3em 3em 7em;
+        padding: 3em 5em;
     }
 `;
 
 export const Section = styled.section`
+    &.subMenu-container {
+        display: none;
+    }
+
     @media (min-width: 768px) {
         &.main-section-container {
             width: 80%;
@@ -40,34 +45,30 @@ export const Section = styled.section`
 
     @media (min-width: 1024px) {
         &.user-data {
-            width: 25%;
+            width: 23%;
             position: relative;
         }
+
+        &.subMenu-container {
+            width: max-content;
+            margin-left: auto;
+            margin-right: auto;
+            display: flex;
+            margin-top: 2em;
+            background: white;
+            box-shadow: 1px 1px 3px 3px var(--color-greyBoxShadow);
+        }
     }
-`;
 
-const SearchBar = styled.div`
-    display: flex;
-    justify-content: space-around;
-    background: white;
-    padding: 0.7em 0.5em;
-    box-shadow: 1px 1px 3px 3px var(--color-greyBoxShadow);
-    border-radius: 8px;
+    @media (min-width: 1440px) {
+        &.subMenu-main {
+            width: 95%;
+            margin: 2em auto 0;
+        }
 
-    @media (min-width: 768px) {
-        justify-content: space-between;
-        padding: 0.3em 1em;
-    }
-`;
-
-const Input = styled.input`
-    border: none;
-    outline: none;
-    padding: 1em 0;
-    font-family: var(--font-family);
-
-    @media (min-width: 768px) {
-        font-size: 18px;
+        &.subMenu-container {
+            margin: 0;
+        }
     }
 `;
 
@@ -110,6 +111,46 @@ export const Container = styled.div`
             width: 70%;
             cursor: pointer;
         }
+
+        &.subMenu {
+            display: flex;
+            padding: 1em;
+            background: white;
+            border-left: 2px solid var(--color-greyBoxShadow);
+            font-size: 14px;
+        }
+    }
+
+    @media (min-width: 1440px) {
+        &.subMenu {
+            padding: 1em 1.5em;
+            font-size: 16px;
+        }
+    }
+`;
+
+const Input = styled.input`
+    border: none;
+    outline: none;
+    padding: 1em 0;
+    font-family: var(--font-family);
+
+    @media (min-width: 768px) {
+        font-size: 18px;
+    }
+`;
+
+const SearchBar = styled.div`
+    display: flex;
+    justify-content: space-around;
+    background: white;
+    padding: 0.7em 0.5em;
+    box-shadow: 1px 1px 3px 3px var(--color-greyBoxShadow);
+    border-radius: 8px;
+
+    @media (min-width: 768px) {
+        justify-content: space-between;
+        padding: 0.3em 1em;
     }
 `;
 
@@ -123,6 +164,7 @@ const Form = styled.form`
     }
 `;
 
+const Label = styled.label``;
 const Button = styled.button`
     background: var(--color-main);
     color: white;
@@ -216,20 +258,15 @@ const notificationData = [
     },
 ];
 
-const SearchImages = styled.img`
-    width: 100%;
-`;
-
-const SearchResult = ({ data }) => {
-    return (
-        <Container>
-            {data.data.results.map((result, index) => {
-                return <SearchImages src={result.urls.regular} key={index}/>;
-            })}
-        </Container>
-    );
-};
-
+const subMenu = [
+    "World",
+    "Following",
+    "Popular",
+    "Post",
+    "Gender",
+    "Location",
+    "Profession",
+];
 const Notifications = ({ setNotificationBox }) => {
     const hideBox = () => {
         setNotificationBox(false);
@@ -257,6 +294,7 @@ function App() {
     const [data, setData] = useState(false);
     const [value, setValue] = useState("");
     const [notificationBox, setNotificationBox] = useState(false);
+    const [initiatedSearch, setInitiatedSearch] = useState(false);
     const cursorRef = useRef(null);
 
     const [width, setWidth] = useState(
@@ -283,13 +321,15 @@ function App() {
 
     const fetchData = async (e) => {
         e.preventDefault();
+        setInitiatedSearch(true);
         const baseurl = "https://api.unsplash.com/search/photos";
         const ACCESS_KEY = "HcRy2JXgdkC_6REA7syOG6yExWyeFh8nhEuIHohp-nk";
-        const query_params = `client_id=${ACCESS_KEY}&query=${value}`;
+        const query_params = `client_id=${ACCESS_KEY}&query=${value}&orientation=squarish`;
 
         try {
             const response = await axios.get(`${baseurl}?${query_params}`);
             setData(response);
+            console.log(response);
         } catch (error) {
             console.log(error);
         }
@@ -324,9 +364,11 @@ function App() {
                                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                                 ></path>
                             </svg>
+                            <Label htmlFor="search-bar"></Label>
                             <Input
                                 placeholder="Find Something..."
                                 value={value}
+                                id="search-bar"
                                 onChange={(e) => handleChange(e)}
                                 ref={cursorRef}
                                 required
@@ -357,7 +399,9 @@ function App() {
                                     </svg>
                                 )}
                             </Container>
-                            {width >= 768 && <Button>Search</Button>}
+                            {width >= 768 && (
+                                <Button type="submit">Search</Button>
+                            )}
                         </SearchBar>
                     </Form>
                     {width >= 768 && (
@@ -399,9 +443,43 @@ function App() {
                     )}
                 </Section>
 
-                <Section>
-                    {data ? <SearchResult data={data} /> : <Loader />}
+                <Section className="subMenu-main">
+                    <Section className="subMenu-container">
+                        {subMenu.map((menu, index) => {
+                            return (
+                                <Container className="subMenu" key={index}>
+                                    <span>{menu}</span>
+                                    <svg
+                                        style={{
+                                            display: "inline",
+                                            width: "16px",
+                                            cursor: "pointer",
+                                            verticalAlign: "middle",
+                                            marginLeft: "4px",
+                                        }}
+                                        fill="none"
+                                        stroke="currentColor"
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                            strokeWidth={2}
+                                            d="M19 9l-7 7-7-7"
+                                        />
+                                    </svg>
+                                </Container>
+                            );
+                        })}
+                    </Section>
                 </Section>
+
+                {initiatedSearch && (
+                    <Section>
+                        {data ? <SearchResults data={data} /> : <Loader />}
+                    </Section>
+                )}
             </Section>
         </Main>
     );
