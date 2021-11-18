@@ -180,6 +180,8 @@ function App() {
         } catch (error) {
             console.log(error);
         }
+
+        setData("");
     };
 
     useEffect(() => {
