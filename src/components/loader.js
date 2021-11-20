@@ -2,7 +2,9 @@ import React from "react";
 import styled from "styled-components";
 
 const LoaderContainer = styled.div`
+    position: relative;
     width: 100%;
+    height: 75vh;
 `;
 
 const LoaderBox = styled.div`

@@ -30,8 +30,7 @@ export const Section = styled.section`
     &.results-section {
         display: block;
         min-width: 100%;
-        min-height: 70vh;
-        z-index-3;
+        min-height: 75vh;
     }
 
     @media (min-width: 768px) {
