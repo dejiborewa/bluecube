@@ -19,13 +19,15 @@ const ImagesContainer = styled.div`
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
         gap: 1em;
+        z-index: 3;
     }
 
     @media (min-width: 1024px) {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
         grid-template-rows: 1fr 1fr;
-        gap: 1em 2em;
+        gap: 2em;
+        z-index: 3;
     }
 `;
 
@@ -38,18 +40,25 @@ const Container = styled.div`
         position: absolute;
         top: 0;
         width: 100%;
-        height: calc(100% - 1em);
+        height: calc(100% - 20px);
         background: linear-gradient(transparent 70%, rgba(50, 50, 50, 0.3));
+        border-radius: 8px;
     }
 
     &.details {
         position: absolute;
-        top: 80%;
-        width: inherit;
+        top: 75%;
+        width: 100%;
     }
 
     &.like-page {
         background: white;
+    }
+
+    @media (min-width: 768px) {
+        &.details-container {
+            height: 100%;
+        }
     }
 `;
 
@@ -63,6 +72,7 @@ const Bio = styled.p`
 `;
 const Location = styled(Bio)`
     font-size: 12px;
+    padding-right: 1em;
 `;
 
 const SearchResults = ({ data }) => {
@@ -76,7 +86,14 @@ const SearchResults = ({ data }) => {
 
                             <Container className="details-container">
                                 <Container className="details">
-                                    <Bio>{result.user.first_name}</Bio>
+                                    <Bio>
+                                        {result.user.first_name.length > 10
+                                            ? result.user.first_name.substr(
+                                                  0,
+                                                  10
+                                              )
+                                            : result.user.first_name}
+                                    </Bio>
                                     <Location>
                                         <svg
                                             style={{
@@ -103,7 +120,9 @@ const SearchResults = ({ data }) => {
                                                 d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                                             />
                                         </svg>
-                                        {result.user.location}
+                                        {result.user.location
+                                            ? result.user.location
+                                            : "none"}
                                     </Location>
                                 </Container>
                             </Container>

@@ -27,6 +27,13 @@ export const Section = styled.section`
         display: none;
     }
 
+    &.results-section {
+        display: block;
+        min-width: 100%;
+        min-height: 70vh;
+        z-index-3;
+    }
+
     @media (min-width: 768px) {
         &.main-section-container {
             width: 80%;
@@ -85,12 +92,13 @@ export const Container = styled.div`
         display: flex;
         justify-content: space-around;
         align-items: center;
+        z-index: 10;
     }
 
     @media (min-width: 768px) {
         &.box-container {
             position: absolute;
-            z-index: 3;
+            z-index: 10;
             top: 4em;
             right: 0em;
             width: 300px;
@@ -172,6 +180,7 @@ const Button = styled.button`
     outline: none;
     padding: 0 2em;
     border-radius: 8px;
+    cursor: pointer;
 
     @media (min-width: 768px) {
         margin: 0.7em 0;
@@ -329,7 +338,6 @@ function App() {
         try {
             const response = await axios.get(`${baseurl}?${query_params}`);
             setData(response);
-        
         } catch (error) {
             console.log(error);
         }
@@ -475,11 +483,11 @@ function App() {
                     </Section>
                 </Section>
 
-                {initiatedSearch && (
-                    <Section>
-                        {data ? <SearchResults data={data} /> : <Loader />}
-                    </Section>
-                )}
+                <Section className="results-section">
+                    {initiatedSearch && (
+                        <>{data ? <SearchResults data={data} /> : <Loader />}</>
+                    )}
+                </Section>
             </Section>
         </Main>
     );
